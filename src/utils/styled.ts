@@ -118,6 +118,7 @@ import {
   video,
   wbr,
 } from "@iatools/rxdom";
+import { classNames } from "./classNames";
 import { aminaCSS, CSS } from "./stitches";
 
 const tagMap = {
@@ -248,10 +249,7 @@ export const styled = (
 
   return composeFunction<FragmentProps & { css?: CSS }>(({ props }) => {
     const fragmentCSS = aminaCSS({ ...css, ...(props.css || {}) });
-
-    const className = props.className
-      ? `${fragmentCSS()} ${props.className}`
-      : fragmentCSS();
+    const className = classNames(fragmentCSS(), props.className);
 
     return fragment({ ...props, className });
   });

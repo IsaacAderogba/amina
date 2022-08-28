@@ -7,7 +7,8 @@ import {
   NodeProps,
   RxComponent,
 } from "@iatools/rxdom";
-import { darkTheme, Size, theme, Theme } from "./stitches";
+import { classNames } from "./classNames";
+import { aminaCSS, CSS, darkTheme, Size, theme, Theme } from "./stitches";
 
 type AminaProviderState = ProviderProps;
 type AminaProviderProps = {
@@ -94,12 +95,15 @@ export const composeAmina = (
 };
 
 type WithAminaProps = {
-  css: any;
+  css?: CSS;
 };
 
 export const withAmina = <P>(WrappedComponent: ComposedComponent<P>) => {
-  const Component = composeFunction<WithAminaProps & P>(({ props }) => {
-    return WrappedComponent({ ...props });
+  return composeFunction<WithAminaProps & P>(({ props }) => {
+    const componentCSS = aminaCSS(props.css || {});
+    const className = classNames(componentCSS(), props.className);
+
+    return WrappedComponent({ ...props, className });
   });
 };
 
