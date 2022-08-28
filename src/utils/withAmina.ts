@@ -1,7 +1,6 @@
 import { ComposedComponent, composeFunction } from "@iatools/rxdom";
 import { AminaContextProps, aminaSelector } from "./AminaProvider";
-import { classNames } from "./classNames";
-import { aminaCSS, AminaCSS } from "./stitches";
+import { AminaCSS } from "./stitches";
 
 type WithAminaProps = {
   css?: AminaCSS;
@@ -14,10 +13,7 @@ type WithAminaContext = {
 export const withAmina = <P>(WrappedComponent: ComposedComponent<P>) => {
   return composeFunction<WithAminaProps & P, WithAminaContext>(
     ({ props, context: { amina } }) => {
-      const componentCSS = aminaCSS(props.css || {});
-      const className = classNames(componentCSS(), props.className);
-
-      return WrappedComponent({ ...props, ...amina, className });
+      return WrappedComponent({ ...amina, ...props });
     },
     {
       amina: aminaSelector((state) => ({
@@ -27,5 +23,3 @@ export const withAmina = <P>(WrappedComponent: ComposedComponent<P>) => {
     }
   );
 };
-
-export type WithAminaAttrs = {};

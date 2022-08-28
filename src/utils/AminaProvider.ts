@@ -7,7 +7,7 @@ import {
   RxComponent,
   div,
 } from "@iatools/rxdom";
-import { darkTheme, Size, theme, Theme } from "./stitches";
+import { aminaGlobalCSS, darkTheme, Size, theme, Theme } from "./stitches";
 
 type AminaState = ProviderProps;
 type AminaProps = {
@@ -19,9 +19,11 @@ class AminaComponent extends Component<AminaState, AminaProps> {
 
   constructor(spec: ComponentSpec) {
     super(spec);
+    aminaGlobalCSS();
 
     const { size = "default", theme = this.readTheme() } = this.props;
     this.state = { size, theme };
+    this.setTheme(theme);
 
     const observer = new MutationObserver((mutations) => {
       mutations.forEach(({ type, attributeName }) => {

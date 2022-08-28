@@ -187,6 +187,35 @@ export const darkColors = {
   ...greenDark,
   ...redDark,
   ...yellowDark,
+
+  primary: "$gold8",
+  primaryHover: "$gold10",
+  primaryAccent: "$gold4",
+  secondary: "$blue10",
+  secondaryHover: "$blue10",
+  secondaryAccent: "$blue6",
+  success: "$green8",
+  successHover: "$green10",
+  successAccent: "$green6",
+  warning: "$yellow8",
+  warningHover: "$yellow10",
+  warningAccent: "$yellow6",
+  error: "$red8",
+  errorHover: "$red10",
+  errorAccent: "$red6",
+
+  title: "$gray12",
+  foregroundTitle: "$gray3",
+  text: "$gray11",
+  foregroundText: "$gray8",
+  label: "$gray9",
+  foregroundLabel: "$gray9",
+  disable: "$gray9",
+  border: "$gray8",
+  divider: "$gray4",
+  accent: "$gray2",
+  background: "$blackA12",
+  foreground: "$whiteA12",
 };
 
 export const defaultShadows = {
@@ -346,7 +375,7 @@ export const darkTheme = createTheme({
   shadows: darkShadows,
 });
 
-export const cssReset = globalCss({
+export const aminaGlobalCSS = globalCss({
   "html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, main, menu, nav, output, ruby, section, summary, time, mark, audio, video":
     {
       margin: "0",
@@ -391,7 +420,7 @@ export type AminaCSS = Stitches.CSS<typeof config>;
 export type PropertyValue<T extends keyof Stitches.CSSProperties> =
   Stitches.PropertyValue<T, typeof config>;
 
-export type Size = "small" | "default" | "large";
 export type Theme = "dark" | "light";
+export type Size = "small" | "default" | "large";
 export type SizeMap = Record<Size, AminaCSS>;
 export type NativeAttrs<T> = T & Omit<FragmentProps, keyof T>;

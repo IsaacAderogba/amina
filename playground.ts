@@ -1,14 +1,15 @@
-import { button, composeFunction, RxDOM } from "@iatools/rxdom";
+import { composeFunction, RxDOM } from "@iatools/rxdom";
 import {
   AminaProvider,
   aminaSelector,
   AminaContextProps,
   styled,
-  withAmina,
+  Box,
 } from "./src";
 
 const App = composeFunction(() => {
   return AminaProvider({
+    theme: "dark",
     content: [ThemeComponent(), SizeComponent()],
   });
 });
@@ -24,8 +25,8 @@ const ThemeComponent = composeFunction<{}, ThemeComponentContext>(
   ({ context }) => {
     console.log("ThemeComponent", context.amina.theme);
     const { theme, setTheme } = context.amina;
-    return ThemeButton({
-      css: { backgroundColor: "blue" },
+    return Box({
+      css: { backgroundColor: "$primary" },
       content: [theme],
       onclick: () => setTheme(theme === "dark" ? "light" : "dark"),
     });
@@ -36,17 +37,6 @@ const ThemeComponent = composeFunction<{}, ThemeComponentContext>(
       theme: state.theme,
     })),
   }
-);
-
-/**
- * All internal components should be wrapped with withAmina if they want
- * to expose a CSS function/want access to state
- */
-const ThemeButton = withAmina(
-  composeFunction(({ props }) => {
-    console.log("button", props);
-    return button(props);
-  })
 );
 
 interface SizeComponentContext {
