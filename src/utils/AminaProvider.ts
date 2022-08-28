@@ -10,7 +10,7 @@ import { darkTheme, Size, theme, Theme } from "./stitches";
 
 type AminaProviderState = ProviderProps;
 type AminaProviderProps = {
-  Provider: (props?: NodeProps<AnimaContextProps>) => RxComponent;
+  Provider: (props?: NodeProps<AminaContextProps>) => RxComponent;
 } & Partial<ProviderProps>;
 
 class AminaProviderComponent extends Component<
@@ -38,13 +38,13 @@ class AminaProviderComponent extends Component<
   }
 
   themes = { light: theme.className, dark: darkTheme.className };
-  readTheme(): Theme {
+  readTheme = (): Theme => {
     const html = document.documentElement;
     if (html.classList.contains(this.themes["dark"])) return "dark";
     return "light";
   }
 
-  setTheme(theme: Theme) {
+  setTheme = (theme: Theme) => {
     const prevTheme = this.readTheme();
     if (prevTheme === theme) return;
 
@@ -55,7 +55,7 @@ class AminaProviderComponent extends Component<
     this.setState((prev) => ({ ...prev, theme }));
   }
 
-  setSize(size: Size) {
+  setSize = (size: Size) => {
     this.setState((prev) => ({ ...prev, size }));
   }
 
@@ -75,10 +75,10 @@ class AminaProviderComponent extends Component<
 
 const AminaProvider = Component.compose(AminaProviderComponent);
 
-export const composeAnima = (
+export const composeAmina = (
   ...[render, consumer]: Parameters<typeof composeContext>
 ) => {
-  const [Provider, selector] = composeContext<AnimaContextProps>(
+  const [Provider, selector] = composeContext<AminaContextProps>(
     render,
     consumer
   );
@@ -97,7 +97,7 @@ type ProviderProps = {
   size: Size;
 };
 
-export type AnimaContextProps = {
+export type AminaContextProps = {
   setSize: (size: Size) => void;
   size: Size;
   setTheme: (theme: Theme) => void;

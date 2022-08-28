@@ -1,2 +1,2 @@
-export { composeAnima } from "./utils/AminaProvider";
-export type { AnimaContextProps } from "./utils/AminaProvider";
+export { composeAmina } from "./utils/AminaProvider";
+export type { AminaContextProps } from "./utils/AminaProvider";
