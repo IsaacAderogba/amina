@@ -119,7 +119,7 @@ import {
   wbr,
 } from "@iatools/rxdom";
 import { classNames } from "./classNames";
-import { aminaCSS, AminaCSS } from "./stitches";
+import { aminaCSS, AminaCSS, VariantProps } from "./stitches";
 
 const tagMap = {
   a,
@@ -240,15 +240,40 @@ const tagMap = {
   wbr,
 };
 
-export const styled = (
-  tag: keyof Omit<HTMLElementTagNameMap, "var">,
-  css: AminaCSS
-) => {
-  const fragment = tagMap[tag];
-  if (!fragment) throw new Error(`${tag} is not a valid styled tag name.`);
+const example = {
+  variants: {
+    color: {
+      violet: {
+        backgroundColor: "blueviolet",
+        color: "white",
+        "&:hover": {
+          backgroundColor: "darkviolet",
+        },
+      },
+      gray: {
+        backgroundColor: "gainsboro",
+        "&:hover": {
+          backgroundColor: "lightgray",
+        },
+      },
+    },
+  },
+};
 
-  return composeFunction<FragmentProps & { css?: AminaCSS }>(({ props }) => {
-    const fragmentCSS = aminaCSS({ ...css, ...(props.css || {}) });
+export const styled = <C extends AminaCSS>(
+  tag: keyof Omit<HTMLElementTagNameMap, "var">,
+  css: C
+) => {
+  return composeFunction<
+    FragmentProps & {
+      css?: AminaCSS;
+      as?: keyof Omit<HTMLElementTagNameMap, "var">;
+    } & VariantProps<typeof css>
+  >(({ props }) => {
+    const fragment = tagMap[props.as || tag];
+    if (!fragment) throw new Error(`${tag} is not a valid styled tag name.`);
+
+    const fragmentCSS = aminaCSS({ ...css, ...(props.css || {}) } as AminaCSS);
     const className = classNames(fragmentCSS(), props.className);
 
     return fragment({ ...props, className });

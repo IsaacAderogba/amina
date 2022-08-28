@@ -415,7 +415,12 @@ export const aminaGlobalCSS = globalCss({
   },
 });
 
-export type VariantProps<T> = Stitches.VariantProps<T>;
+export type VariantProps<T extends AminaCSS> = Partial<{
+  [P in keyof T["variants"]]: keyof T["variants"][P] extends "true"
+    ? boolean
+    : keyof T["variants"][P];
+}>;
+
 export type AminaCSS = Stitches.CSS<typeof config>;
 export type PropertyValue<T extends keyof Stitches.CSSProperties> =
   Stitches.PropertyValue<T, typeof config>;
