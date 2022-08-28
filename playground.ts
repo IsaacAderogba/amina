@@ -1,9 +1,11 @@
-import { button, composeFunction, div, RxDOM } from "@iatools/rxdom";
-import { composeAmina, AminaContextProps, styled, withAmina } from "./src";
-
-const [AminaProvider, aminaSelector] = composeAmina(({ props }) => {
-  return div({ content: props.content });
-});
+import { button, composeFunction, RxDOM } from "@iatools/rxdom";
+import {
+  AminaProvider,
+  aminaSelector,
+  AminaContextProps,
+  styled,
+  withAmina,
+} from "./src";
 
 const App = composeFunction(() => {
   return AminaProvider({
@@ -38,7 +40,7 @@ const ThemeComponent = composeFunction<{}, ThemeComponentContext>(
 
 const ThemeButton = withAmina(
   composeFunction(({ props }) => {
-    console.log(props);
+    console.log("button", props);
     return button(props);
   })
 );

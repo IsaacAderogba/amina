@@ -6,19 +6,17 @@ import {
   composeFunction,
   NodeProps,
   RxComponent,
+  div,
 } from "@iatools/rxdom";
 import { classNames } from "./classNames";
 import { aminaCSS, CSS, darkTheme, Size, theme, Theme } from "./stitches";
 
-type AminaProviderState = ProviderProps;
-type AminaProviderProps = {
+type AminaState = ProviderProps;
+type AminaProps = {
   Provider: (props?: NodeProps<AminaContextProps>) => RxComponent;
 } & Partial<ProviderProps>;
 
-class AminaProviderComponent extends Component<
-  AminaProviderState,
-  AminaProviderProps
-> {
+class AminaComponent extends Component<AminaState, AminaProps> {
   unsubscribe: () => void;
 
   constructor(spec: ComponentSpec) {
@@ -75,37 +73,7 @@ class AminaProviderComponent extends Component<
   }
 }
 
-const AminaProvider = Component.compose(AminaProviderComponent);
-
-export const composeAmina = (
-  ...[render, consumer]: Parameters<typeof composeContext>
-) => {
-  const [Provider, selector] = composeContext<AminaContextProps>(
-    render,
-    consumer
-  );
-
-  const WrappedProvider = composeFunction<Partial<ProviderProps>>(
-    ({ props: { key = "AminaProvider", ...props } }) => {
-      return AminaProvider({ key, Provider, ...props });
-    }
-  );
-
-  return [WrappedProvider, selector] as const;
-};
-
-type WithAminaProps = {
-  css?: CSS;
-};
-
-export const withAmina = <P>(WrappedComponent: ComposedComponent<P>) => {
-  return composeFunction<WithAminaProps & P>(({ props }) => {
-    const componentCSS = aminaCSS(props.css || {});
-    const className = classNames(componentCSS(), props.className);
-
-    return WrappedComponent({ ...props, className });
-  });
-};
+const Amina = Component.compose(AminaComponent);
 
 type ProviderProps = {
   theme: Theme;
@@ -117,4 +85,50 @@ export type AminaContextProps = {
   size: Size;
   setTheme: (theme: Theme) => void;
   theme: Theme;
+};
+
+export const composeAmina = (
+  ...[render, consumer]: Parameters<typeof composeContext>
+) => {
+  const [Provider, selector] = composeContext<AminaContextProps>(
+    render,
+    consumer
+  );
+
+  const WrappedProvider = composeFunction<Partial<ProviderProps>>(
+    ({ props: { key = "Amina", ...props } }) => {
+      return Amina({ key, Provider, ...props });
+    }
+  );
+
+  return [WrappedProvider, selector] as const;
+};
+
+export const [AminaProvider, aminaSelector] = composeAmina(({ props }) => {
+  return div({ content: props.content });
+});
+
+type WithAminaProps = {
+  css?: CSS;
+};
+
+type WithAminaContext = {
+  amina: Pick<AminaContextProps, "size" | "theme">;
+};
+
+export const withAmina = <P>(WrappedComponent: ComposedComponent<P>) => {
+  return composeFunction<WithAminaProps & P, WithAminaContext>(
+    ({ props, context: { amina } }) => {
+      const componentCSS = aminaCSS(props.css || {});
+      const className = classNames(componentCSS(), props.className);
+
+      return WrappedComponent({ ...props, ...amina, className });
+    },
+    {
+      amina: aminaSelector((state) => ({
+        size: state.size,
+        theme: state.theme,
+      })),
+    }
+  );
 };
