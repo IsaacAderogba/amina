@@ -392,5 +392,6 @@ export type PropertyValue<T extends keyof Stitches.CSSProperties> =
   Stitches.PropertyValue<T, typeof config>;
 
 export type Size = "small" | "default" | "large";
+export type Theme = "dark" | "light";
 export type SizeMap = Record<Size, CSS>;
 export type NativeAttrs<T> = T & Omit<FragmentProps, keyof T>;
