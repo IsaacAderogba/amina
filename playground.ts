@@ -5,12 +5,22 @@ import {
   AminaContextProps,
   styled,
   Box,
+  Heading,
 } from "./src";
 
 const App = composeFunction(() => {
   return AminaProvider({
     theme: "dark",
-    content: [ThemeComponent(), SizeComponent()],
+    content: [
+      Heading({ type: "h1", content: ["h1"] }),
+      Heading({ type: "h2", content: ["h2"] }),
+      Heading({ type: "h3", content: ["h3"] }),
+      Heading({ type: "h4", content: ["h4"] }),
+      Heading({ type: "h5", content: ["h5"] }),
+      Heading({ type: "h6", content: ["h6"] }),
+      ThemeComponent(),
+      SizeComponent(),
+    ],
   });
 });
 

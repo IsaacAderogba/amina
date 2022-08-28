@@ -119,7 +119,7 @@ import {
   wbr,
 } from "@iatools/rxdom";
 import { classNames } from "./classNames";
-import { aminaCSS, AminaCSS, VariantProps } from "./stitches";
+import { aminaCSS, AminaCSS, StyledProps, VariantProps } from "./stitches";
 
 const tagMap = {
   a,
@@ -240,41 +240,18 @@ const tagMap = {
   wbr,
 };
 
-const example = {
-  variants: {
-    color: {
-      violet: {
-        backgroundColor: "blueviolet",
-        color: "white",
-        "&:hover": {
-          backgroundColor: "darkviolet",
-        },
-      },
-      gray: {
-        backgroundColor: "gainsboro",
-        "&:hover": {
-          backgroundColor: "lightgray",
-        },
-      },
-    },
-  },
-};
-
 export const styled = <C extends AminaCSS>(
   tag: keyof Omit<HTMLElementTagNameMap, "var">,
   css: C
 ) => {
   return composeFunction<
-    FragmentProps & {
-      css?: AminaCSS;
-      as?: keyof Omit<HTMLElementTagNameMap, "var">;
-    } & VariantProps<typeof css>
-  >(({ props }) => {
+    FragmentProps & StyledProps & VariantProps<typeof css>
+  >(({ props = {} }) => {
     const fragment = tagMap[props.as || tag];
     if (!fragment) throw new Error(`${tag} is not a valid styled tag name.`);
 
     const fragmentCSS = aminaCSS({ ...css, ...(props.css || {}) } as AminaCSS);
-    const className = classNames(fragmentCSS(), props.className);
+    const className = classNames(fragmentCSS(props), props.className);
 
     return fragment({ ...props, className });
   });

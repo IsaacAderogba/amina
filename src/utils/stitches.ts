@@ -1,4 +1,3 @@
-import type { FragmentProps } from "@iatools/rxdom";
 import type * as Stitches from "@stitches/core";
 import { createStitches } from "@stitches/core";
 import {
@@ -26,13 +25,12 @@ export const defaultTokens = {
     mono: "Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono','Courier New', monospace;",
   },
   fontSizes: {
-    tiny: ".75rem",
-    xs: "0.875rem",
-    base: "1.1rem",
-    sm: "1.25rem",
-    md: "1.5rem",
-    lg: "1.875rem",
-    xl: "2.25rem",
+    xs: "11px",
+    sm: "13px",
+    md: "15px",
+    lg: "24px",
+    xl: "40px",
+    xxl: "64px",
   },
   fontWeights: {
     hairline: 100,
@@ -107,8 +105,7 @@ export const defaultTokens = {
   radii: {
     xs: "4px",
     sm: "8px",
-    md: "10px",
-    base: "12px",
+    md: "12px",
     lg: "14px",
     xl: "18px",
     squared: "33%",
@@ -428,4 +425,8 @@ export type PropertyValue<T extends keyof Stitches.CSSProperties> =
 export type Theme = "dark" | "light";
 export type Size = "small" | "default" | "large";
 export type SizeMap = Record<Size, AminaCSS>;
-export type NativeAttrs<T> = T & Omit<FragmentProps, keyof T>;
+
+export type StyledProps = {
+  css?: AminaCSS;
+  as?: keyof Omit<HTMLElementTagNameMap, "var">;
+};
