@@ -323,7 +323,7 @@ const defaultUtils = {
 };
 
 export const {
-  css,
+  css: aminaCSS,
   globalCss,
   keyframes,
   getCssText,

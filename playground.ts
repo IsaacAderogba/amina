@@ -1,5 +1,5 @@
 import { button, composeFunction, div, RxDOM } from "@iatools/rxdom";
-import { composeAmina, AminaContextProps } from "./src";
+import { composeAmina, AminaContextProps, styled } from "./src";
 
 const [AminaProvider, aminaSelector] = composeAmina(({ props }) => {
   return div({ content: props.content });
@@ -46,7 +46,7 @@ const SizeComponent = composeFunction<{}, SizeComponentContext>(
   ({ context }) => {
     console.log("SizeComponent", context.amina.size);
     const { size, setSize } = context.amina;
-    return button({
+    return Button({
       content: [size],
       onclick: () => setSize(size === "default" ? "small" : "default"),
     });
@@ -58,6 +58,10 @@ const SizeComponent = composeFunction<{}, SizeComponentContext>(
     })),
   }
 );
+
+const Button = styled("button", {
+  backgroundColor: "red",
+});
 
 const rxdom = new RxDOM();
 rxdom.render(App({ key: "root" }), document.getElementById("app")!);

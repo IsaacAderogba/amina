@@ -1,6 +1,7 @@
 import {
   Component,
   ComponentSpec,
+  ComposedComponent,
   composeContext,
   composeFunction,
   NodeProps,
@@ -42,7 +43,7 @@ class AminaProviderComponent extends Component<
     const html = document.documentElement;
     if (html.classList.contains(this.themes["dark"])) return "dark";
     return "light";
-  }
+  };
 
   setTheme = (theme: Theme) => {
     const prevTheme = this.readTheme();
@@ -53,11 +54,11 @@ class AminaProviderComponent extends Component<
     html.classList.add(this.themes[theme]);
 
     this.setState((prev) => ({ ...prev, theme }));
-  }
+  };
 
   setSize = (size: Size) => {
     this.setState((prev) => ({ ...prev, size }));
-  }
+  };
 
   render() {
     const { size, theme } = this.state;
@@ -90,6 +91,16 @@ export const composeAmina = (
   );
 
   return [WrappedProvider, selector] as const;
+};
+
+type WithAminaProps = {
+  css: any;
+};
+
+export const withAmina = <P>(WrappedComponent: ComposedComponent<P>) => {
+  const Component = composeFunction<WithAminaProps & P>(({ props }) => {
+    return WrappedComponent({ ...props });
+  });
 };
 
 type ProviderProps = {
