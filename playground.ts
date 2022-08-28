@@ -38,6 +38,10 @@ const ThemeComponent = composeFunction<{}, ThemeComponentContext>(
   }
 );
 
+/**
+ * All internal components should be wrapped with withAmina if they want
+ * to expose a CSS function/want access to state
+ */
 const ThemeButton = withAmina(
   composeFunction(({ props }) => {
     console.log("button", props);

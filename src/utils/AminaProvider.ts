@@ -1,15 +1,13 @@
 import {
   Component,
   ComponentSpec,
-  ComposedComponent,
   composeContext,
   composeFunction,
   NodeProps,
   RxComponent,
   div,
 } from "@iatools/rxdom";
-import { classNames } from "./classNames";
-import { aminaCSS, CSS, darkTheme, Size, theme, Theme } from "./stitches";
+import { darkTheme, Size, theme, Theme } from "./stitches";
 
 type AminaState = ProviderProps;
 type AminaProps = {
@@ -87,7 +85,7 @@ export type AminaContextProps = {
   theme: Theme;
 };
 
-export const composeAmina = (
+const composeAmina = (
   ...[render, consumer]: Parameters<typeof composeContext>
 ) => {
   const [Provider, selector] = composeContext<AminaContextProps>(
@@ -107,28 +105,3 @@ export const composeAmina = (
 export const [AminaProvider, aminaSelector] = composeAmina(({ props }) => {
   return div({ content: props.content });
 });
-
-type WithAminaProps = {
-  css?: CSS;
-};
-
-type WithAminaContext = {
-  amina: Pick<AminaContextProps, "size" | "theme">;
-};
-
-export const withAmina = <P>(WrappedComponent: ComposedComponent<P>) => {
-  return composeFunction<WithAminaProps & P, WithAminaContext>(
-    ({ props, context: { amina } }) => {
-      const componentCSS = aminaCSS(props.css || {});
-      const className = classNames(componentCSS(), props.className);
-
-      return WrappedComponent({ ...props, ...amina, className });
-    },
-    {
-      amina: aminaSelector((state) => ({
-        size: state.size,
-        theme: state.theme,
-      })),
-    }
-  );
-};

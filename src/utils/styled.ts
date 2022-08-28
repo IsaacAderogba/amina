@@ -119,7 +119,7 @@ import {
   wbr,
 } from "@iatools/rxdom";
 import { classNames } from "./classNames";
-import { aminaCSS, CSS } from "./stitches";
+import { aminaCSS, AminaCSS } from "./stitches";
 
 const tagMap = {
   a,
@@ -242,12 +242,12 @@ const tagMap = {
 
 export const styled = (
   tag: keyof Omit<HTMLElementTagNameMap, "var">,
-  css: CSS
+  css: AminaCSS
 ) => {
   const fragment = tagMap[tag];
   if (!fragment) throw new Error(`${tag} is not a valid styled tag name.`);
 
-  return composeFunction<FragmentProps & { css?: CSS }>(({ props }) => {
+  return composeFunction<FragmentProps & { css?: AminaCSS }>(({ props }) => {
     const fragmentCSS = aminaCSS({ ...css, ...(props.css || {}) });
     const className = classNames(fragmentCSS(), props.className);
 
